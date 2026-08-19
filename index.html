@@ -51,45 +51,73 @@
 
   <main>
     <section id="intro" class="section active">
-      <div class="hero">
-        <div class="hero-content">
+      <div class="hero-plate">
+        <header class="plate-head">
+          <p class="plate-label">KAKEYA CONJECTURE LAB · 挂谷猜想实验室</p>
           <h1>一根针，如何占满三维空间？</h1>
           <p class="subtitle">从 1917 年的转针问题，到王虹与 Joshua Zahl 证明三维挂谷集合具有完整维数</p>
-          <button class="cta-btn" id="startBtn">开始实验</button>
-          <p class="disclaimer">有限线段、有限细管、像素覆盖和动画只用于建立直觉，不能充当数学证明</p>
-        </div>
-        <div class="hero-visual">
-          <div id="three-container"></div>
-          <div class="three-controls">
-            <div class="pattern-buttons">
-              <button class="pattern-btn active" data-pattern="star">中心星束</button>
-              <button class="pattern-btn" data-pattern="scattered">分散排列</button>
-              <button class="pattern-btn" data-pattern="sticky">多尺度黏连</button>
-              <button class="pattern-btn" data-pattern="grain">木纹颗粒</button>
-            </div>
-            <div class="parameter-controls">
-              <div class="param-group">
-                <label>样本数量 N</label>
-                <input type="range" id="tubeCount" min="40" max="640" value="320" step="40">
-                <span id="tubeCountValue">320</span>
-              </div>
-              <div class="param-group">
-                <label>管半径 δ</label>
-                <input type="range" id="tubeRadius" min="0.005" max="0.03" value="0.014" step="0.001">
-                <span id="radiusValue">0.014</span>
-              </div>
-            </div>
-            <button class="control-btn" id="pauseBtn">⏸ 暂停旋转</button>
-            <div class="gap-meter">
-              <div class="gap-head">
-                <span class="gap-label">最大角隙</span>
-                <span class="gap-value" id="gapValue">—</span>
-              </div>
-              <p class="gap-note" id="gapNote"></p>
-            </div>
-            <p class="interaction-hint">拖动旋转 · 滚轮缩放</p>
+        </header>
+
+        <div class="plate-status">
+          <div class="status-cell">
+            <span class="status-k">提出</span><span class="status-v">1917</span>
+            <span class="status-n">挂谷宗一的转针问题</span>
+          </div>
+          <div class="status-cell">
+            <span class="status-k">n = 2</span><span class="status-v ok">已证</span>
+            <span class="status-n">Davies 1971</span>
+          </div>
+          <div class="status-cell">
+            <span class="status-k">n = 3</span><span class="status-v ok">2025</span>
+            <span class="status-n">Wang &amp; Zahl，127 页</span>
+          </div>
+          <div class="status-cell">
+            <span class="status-k">n &ge; 4</span><span class="status-v open">开放</span>
+            <span class="status-n">至今无人证明</span>
           </div>
         </div>
+
+        <figure class="plate-figure">
+          <div class="figure-frame">
+            <span class="frame-tag">装置</span>
+            <div id="three-container"></div>
+            <p class="interaction-hint">拖动旋转 · 滚轮缩放</p>
+          </div>
+
+          <div class="plate-rail">
+            <div class="rail-group">
+              <span class="rail-k">排布</span>
+              <div class="pattern-buttons">
+                <button class="pattern-btn active" data-pattern="star">中心星束</button>
+                <button class="pattern-btn" data-pattern="scattered">分散排列</button>
+                <button class="pattern-btn" data-pattern="sticky">多尺度黏连</button>
+                <button class="pattern-btn" data-pattern="grain">木纹颗粒</button>
+              </div>
+            </div>
+            <div class="rail-group">
+              <span class="rail-k">样本数量 N</span>
+              <input type="range" id="tubeCount" min="40" max="640" value="320" step="40">
+              <span class="rail-v" id="tubeCountValue">320</span>
+            </div>
+            <div class="rail-group">
+              <span class="rail-k">管半径 δ</span>
+              <input type="range" id="tubeRadius" min="0.005" max="0.03" value="0.014" step="0.001">
+              <span class="rail-v" id="radiusValue">0.014</span>
+            </div>
+            <button class="control-btn" id="pauseBtn">⏸ 暂停旋转</button>
+          </div>
+
+          <figcaption class="plate-caption">
+            <div class="caption-reading">
+              <span class="reading-k">最大角隙</span>
+              <span class="reading-v" id="gapValue">—</span>
+            </div>
+            <p class="reading-note" id="gapNote"></p>
+            <p class="disclaimer">有限线段、有限细管、像素覆盖和动画只用于建立直觉，不能充当数学证明。</p>
+          </figcaption>
+        </figure>
+
+        <button class="cta-btn" id="startBtn">开始实验 →</button>
       </div>
     </section>
 
@@ -233,14 +261,14 @@
         <svg class="proof-svg" viewBox="0 0 880 300" role="img" aria-label="细管按中间尺度归并为粗管的示意图">
           <defs>
             <marker id="ar" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
-              <polygon points="0 0, 9 3.5, 0 7" fill="#94a3b8"/>
+              <polygon points="0 0, 9 3.5, 0 7" fill="#8a8377"/>
             </marker>
           </defs>
 
           <!-- 左: 单位球上的方向 -->
           <text x="112" y="26" class="svg-cap" text-anchor="middle">方向球 S²</text>
-          <circle cx="112" cy="130" r="72" fill="none" stroke="#475569" stroke-width="1.4"/>
-          <g stroke="#5aa87a" stroke-width="1.5" opacity=".85">
+          <circle cx="112" cy="130" r="72" fill="none" stroke="#4a4438" stroke-width="1.4"/>
+          <g stroke="#6f9068" stroke-width="1.5" opacity=".85">
             <line x1="112" y1="130" x2="171" y2="88"/><line x1="112" y1="130" x2="178" y2="120"/>
             <line x1="112" y1="130" x2="166" y2="163"/><line x1="112" y1="130" x2="128" y2="200"/>
             <line x1="112" y1="130" x2="62"  y2="192"/><line x1="112" y1="130" x2="44"  y2="106"/>
@@ -249,20 +277,20 @@
           <text x="112" y="228" class="svg-sub" text-anchor="middle">δ-分离的方向</text>
           <text x="112" y="248" class="svg-num" text-anchor="middle">约 δ⁻² 个</text>
 
-          <line x1="196" y1="130" x2="246" y2="130" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#ar)"/>
+          <line x1="196" y1="130" x2="246" y2="130" stroke="#8a8377" stroke-width="1.4" marker-end="url(#ar)"/>
           <text x="221" y="118" class="svg-tiny" text-anchor="middle">每个方向一根</text>
 
           <!-- 中: 粗管 -->
           <text x="392" y="26" class="svg-cap" text-anchor="middle">粗管　ρ × ρ × 1</text>
           <g>
-            <rect x="266" y="60" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"/>
-            <rect x="266" y="92" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+            <rect x="266" y="60" width="252" height="14" rx="3" fill="#2f3a42" stroke="#6f8fa8" stroke-width="1"/>
+            <rect x="266" y="92" width="252" height="14" rx="3" fill="#2f3a42" stroke="#6f8fa8" stroke-width="1"
                   transform="rotate(-1.8 392 99)"/>
-            <rect x="266" y="124" width="252" height="14" rx="3" fill="#3a6a9a" stroke="#7fb8e0" stroke-width="1.6"
+            <rect x="266" y="124" width="252" height="14" rx="3" fill="#4a6f85" stroke="#8fb0c4" stroke-width="1.6"
                   transform="rotate(1.2 392 131)"/>
-            <rect x="266" y="156" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+            <rect x="266" y="156" width="252" height="14" rx="3" fill="#2f3a42" stroke="#6f8fa8" stroke-width="1"
                   transform="rotate(-0.9 392 163)"/>
-            <rect x="266" y="188" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+            <rect x="266" y="188" width="252" height="14" rx="3" fill="#2f3a42" stroke="#6f8fa8" stroke-width="1"
                   transform="rotate(1.8 392 195)"/>
           </g>
           <text x="392" y="228" class="svg-sub" text-anchor="middle">按中间尺度 ρ 归并</text>
@@ -276,7 +304,7 @@
           <!-- 右: 粗管内部的细管 -->
           <text x="742" y="26" class="svg-cap" text-anchor="middle">细管　δ × δ × 1</text>
           <rect x="604" y="62" width="276" height="148" rx="5" fill="none" stroke="#d97742" stroke-width="1.4"/>
-          <g stroke="#7fb8e0" stroke-width="2.4" opacity=".92">
+          <g stroke="#8fb0c4" stroke-width="2.4" opacity=".92">
             <line x1="616" y1="78"  x2="868" y2="82"/><line x1="616" y1="94"  x2="868" y2="92"/>
             <line x1="616" y1="110" x2="868" y2="116"/><line x1="616" y1="126" x2="868" y2="122"/>
             <line x1="616" y1="142" x2="868" y2="148"/><line x1="616" y1="158" x2="868" y2="154"/>
@@ -286,7 +314,7 @@
           <text x="742" y="248" class="svg-num" text-anchor="middle">约 (ρ/δ)² 根</text>
 
           <!-- 底部恒等式 -->
-          <line x1="40" y1="268" x2="840" y2="268" stroke="#334155" stroke-width="1"/>
+          <line x1="40" y1="268" x2="840" y2="268" stroke="#38332b" stroke-width="1"/>
           <text x="440" y="290" class="svg-eq" text-anchor="middle">
             ρ⁻² 根粗管 × (ρ/δ)² 根细管 = δ⁻² 根 &#8212; 正好是方向的总数，两边对得上
           </text>
@@ -306,22 +334,22 @@
         <svg class="proof-svg" viewBox="0 0 880 330" role="img" aria-label="证明按黏性与非黏性分为两支的结构图">
           <defs>
             <marker id="ar2" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
-              <polygon points="0 0, 9 3.5, 0 7" fill="#94a3b8"/>
+              <polygon points="0 0, 9 3.5, 0 7" fill="#8a8377"/>
             </marker>
           </defs>
 
-          <rect x="300" y="14" width="280" height="46" rx="8" fill="#1e293b" stroke="#7fb8e0" stroke-width="1.6"/>
+          <rect x="300" y="14" width="280" height="46" rx="8" fill="#1c1a16" stroke="#8fb0c4" stroke-width="1.6"/>
           <text x="440" y="35" class="svg-box-t" text-anchor="middle">三维挂谷集合</text>
           <text x="440" y="52" class="svg-tiny" text-anchor="middle">要证：维数 = 3</text>
 
-          <path d="M400 60 L214 104" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
-          <path d="M480 60 L666 104" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <path d="M400 60 L214 104" stroke="#8a8377" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <path d="M480 60 L666 104" stroke="#8a8377" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
 
           <!-- 左支: 黏性 -->
-          <rect x="44" y="110" width="340" height="176" rx="10" fill="#182a22" stroke="#5aa87a" stroke-width="1.5"/>
-          <text x="214" y="136" class="svg-box-t" text-anchor="middle" fill="#7cc99a">黏性情形</text>
+          <rect x="44" y="110" width="340" height="176" rx="10" fill="#1a201a" stroke="#6f9068" stroke-width="1.5"/>
+          <text x="214" y="136" class="svg-box-t" text-anchor="middle" fill="#87a87e">黏性情形</text>
           <text x="214" y="157" class="svg-sub" text-anchor="middle">细管在粗管里挤到最满</text>
-          <g stroke="#5aa87a" stroke-width="2.2" opacity=".9">
+          <g stroke="#6f9068" stroke-width="2.2" opacity=".9">
             <line x1="86" y1="180" x2="342" y2="180"/><line x1="86" y1="192" x2="342" y2="192"/>
             <line x1="86" y1="204" x2="342" y2="204"/><line x1="86" y1="216" x2="342" y2="216"/>
           </g>
@@ -329,8 +357,8 @@
           <text x="214" y="268" class="svg-cite" text-anchor="middle">Wang &amp; Zahl，arXiv:2210.09581（JAMS）</text>
 
           <!-- 右支: 非黏性 -->
-          <rect x="496" y="110" width="340" height="176" rx="10" fill="#2a1e18" stroke="#d97742" stroke-width="1.5"/>
-          <text x="666" y="136" class="svg-box-t" text-anchor="middle" fill="#e59468">非黏性情形</text>
+          <rect x="496" y="110" width="340" height="176" rx="10" fill="#241c16" stroke="#d97742" stroke-width="1.5"/>
+          <text x="666" y="136" class="svg-box-t" text-anchor="middle" fill="#e0906a">非黏性情形</text>
           <text x="666" y="157" class="svg-sub" text-anchor="middle">细管散开，粗管远多于 ρ⁻²</text>
           <g stroke="#d97742" stroke-width="2.2" opacity=".9">
             <line x1="538" y1="176" x2="794" y2="186"/><line x1="538" y1="196" x2="794" y2="190"/>
@@ -339,9 +367,9 @@
           <text x="666" y="244" class="svg-sub" text-anchor="middle">改用「颗粒」结构补位</text>
           <text x="666" y="268" class="svg-cite" text-anchor="middle">Wang &amp; Zahl，arXiv:2502.17655（127 页）</text>
 
-          <path d="M214 286 L400 314" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
-          <path d="M666 286 L480 314" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
-          <text x="440" y="326" class="svg-box-t" text-anchor="middle" fill="#7fb8e0">两支合起来 ⟹ 维数 = 3</text>
+          <path d="M214 286 L400 314" stroke="#8a8377" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <path d="M666 286 L480 314" stroke="#8a8377" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <text x="440" y="326" class="svg-box-t" text-anchor="middle" fill="#8fb0c4">两支合起来 ⟹ 维数 = 3</text>
         </svg>
 
         <div class="layer-content intuition">

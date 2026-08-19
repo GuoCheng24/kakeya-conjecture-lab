@@ -112,7 +112,7 @@ function initThree() {
   if (!container) return;
 
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0f172a);
+  scene.background = new THREE.Color(0x14120f);
 
   camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
   camera.position.z = 3.1;
@@ -124,11 +124,11 @@ function initThree() {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.72);
   scene.add(ambientLight);
 
-  directionalLight = new THREE.DirectionalLight(0x6366f1, 0.8);
+  directionalLight = new THREE.DirectionalLight(0xd97742, 0.8);
   directionalLight.position.set(5, 5, 5);
   scene.add(directionalLight);
 
-  pointLight = new THREE.PointLight(0x06b6d4, 1.05);
+  pointLight = new THREE.PointLight(0x6f9068, 1.05);
   pointLight.position.set(-5, -5, 5);
   scene.add(pointLight);
 
@@ -227,10 +227,10 @@ function initThree() {
 
 // 模式颜色映射
 const patternColors = {
-  star: 0x6366f1,        // 紫色 - 中心星束
-  scattered: 0x06b6d4,   // 青色 - 分散排列
-  sticky: 0xf59e0b,      // 琥珀色 - 多尺度黏连
-  grain: 0xec4899        // 粉色 - 木纹颗粒
+  star: 0xd97742,        // 紫色 - 中心星束
+  scattered: 0x6f9068,   // 青色 - 分散排列
+  sticky: 0xc9973f,      // 琥珀色 - 多尺度黏连
+  grain: 0x6f8fa8        // 粉色 - 木纹颗粒
 };
 
 // ---------- 方向采样与覆盖度量 ----------
@@ -301,7 +301,7 @@ function createTubes() {
   const geometry = new THREE.CylinderGeometry(tubeRadius, tubeRadius, 1.5, 10);
   
   // 根据模式选择颜色
-  const color = patternColors[currentPattern] || 0x6366f1;
+  const color = patternColors[currentPattern] || 0xd97742;
   const material = new THREE.MeshPhongMaterial({
     color: color,
     transparent: true,
@@ -585,11 +585,11 @@ function draw2dExperiment() {
   const scale = Math.min(width, height) * 0.42;
   
   // 绘制背景
-  ctx2d.fillStyle = '#1e293b';
+  ctx2d.fillStyle = '#1c1a16';
   ctx2d.fillRect(0, 0, width, height);
   
   // 绘制参考圆
-  ctx2d.strokeStyle = '#334155';
+  ctx2d.strokeStyle = '#38332b';
   ctx2d.lineWidth = 1;
   ctx2d.beginPath();
   ctx2d.arc(centerX, centerY, scale, 0, Math.PI * 2);
@@ -637,7 +637,7 @@ function draw2dExperiment() {
     ctx2d.beginPath();
     ctx2d.moveTo(x1, y1);
     ctx2d.lineTo(x2, y2);
-    ctx2d.strokeStyle = `rgba(99, 102, 241, 0.8)`;
+    ctx2d.strokeStyle = `rgba(217, 119, 66, 0.8)`;
     ctx2d.lineWidth = 1;
     ctx2d.stroke();
   }
@@ -658,7 +658,8 @@ function updateStats(width, height) {
     // drawn, so every pixel has alpha 255. Counting alpha > 0 therefore
     // reports 100% no matter what is on screen. Compare against the known
     // background colour instead, and ignore the faint reference circle.
-    const BG = [30, 41, 59];          // #1e293b
+    const BG = [28, 26, 22];          // #1c1a16  —— 必须与实际绘制的底色一致,
+  // 否则覆盖率统计会把背景算成前景(2026-08 曾因此永远显示 100%)
     const TOL = 26;                   // tolerance for antialiasing
     let covered = 0;
 
@@ -745,7 +746,7 @@ function drawDeltaExperiment() {
   const centerY = height / 2;
   const scale = Math.min(width, height) * 0.42;
   
-  deltaCtx.fillStyle = '#1e293b';
+  deltaCtx.fillStyle = '#1c1a16';
   deltaCtx.fillRect(0, 0, width, height);
   
   const numLines = 12;
@@ -762,7 +763,7 @@ function drawDeltaExperiment() {
     deltaCtx.beginPath();
     deltaCtx.moveTo(x1, y1);
     deltaCtx.lineTo(x2, y2);
-    deltaCtx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+    deltaCtx.strokeStyle = 'rgba(217, 119, 66, 0.3)';
     deltaCtx.lineWidth = tubeWidth;
     deltaCtx.lineCap = 'round';
     deltaCtx.stroke();
@@ -770,13 +771,13 @@ function drawDeltaExperiment() {
     deltaCtx.beginPath();
     deltaCtx.moveTo(x1, y1);
     deltaCtx.lineTo(x2, y2);
-    deltaCtx.strokeStyle = '#6366f1';
+    deltaCtx.strokeStyle = '#d97742';
     deltaCtx.lineWidth = 1;
     deltaCtx.stroke();
   }
   
   const textY = height - 30;
-  deltaCtx.fillStyle = '#94a3b8';
+  deltaCtx.fillStyle = '#8a8377';
   deltaCtx.font = '14px sans-serif';
   deltaCtx.textAlign = 'center';
   deltaCtx.fillText(`δ = ${delta}`, centerX, textY);
@@ -922,7 +923,7 @@ function measure(occ, S, epsList) {
 function drawSetPanel(occ) {
   const W = dimensionCanvas.width, H = dimensionCanvas.height;
   const side = Math.min(W, H), ox = (W - side) / 2, oy = (H - side) / 2;
-  dimensionCtx.fillStyle = '#0f172a';
+  dimensionCtx.fillStyle = '#14120f';
   dimensionCtx.fillRect(0, 0, W, H);
 
   const img = dimensionCtx.createImageData(side, side);
@@ -933,9 +934,11 @@ function drawSetPanel(occ) {
       const sx = ((px * S / side) | 0);
       const on = occ[sy * S + sx];
       const k = (py * side + px) * 4;
-      img.data[k]     = on ? 226 : 15;
-      img.data[k + 1] = on ? 232 : 23;
-      img.data[k + 2] = on ? 240 : 42;
+      // 分量写死在这里, 十六进制的批量替换抓不到 —— 改配色时必须同步改这三行。
+      // on  = #d8d1c4 (--ink-2 亮档)   off = #14120f (--ground)
+      img.data[k]     = on ? 216 : 20;
+      img.data[k + 1] = on ? 209 : 18;
+      img.data[k + 2] = on ? 196 : 15;
       img.data[k + 3] = 255;
     }
   }
@@ -961,7 +964,7 @@ function drawSetPanel(occ) {
       dimensionCtx.font = '12px ui-monospace, SFMono-Regular, Menlo, monospace';
       const lab = '网格 ε = ' + eps;
       const lw = dimensionCtx.measureText(lab).width;
-      dimensionCtx.fillStyle = 'rgba(15,23,42,0.85)';
+      dimensionCtx.fillStyle = 'rgba(20,18,15,0.85)';
       dimensionCtx.fillRect(ox + 4, oy + 4, lw + 12, 20);
       dimensionCtx.fillStyle = 'rgba(217,119,66,0.98)';
       dimensionCtx.fillText(lab, ox + 10, oy + 18);
@@ -973,7 +976,7 @@ function drawSetPanel(occ) {
 function drawFitPanel(res, truth) {
   const W = dimensionFitCanvas.width, H = dimensionFitCanvas.height;
   const c = dimensionFitCtx;
-  c.fillStyle = '#0f172a'; c.fillRect(0, 0, W, H);
+  c.fillStyle = '#14120f'; c.fillRect(0, 0, W, H);
   if (!res.pts.length) return;
 
   const padL = 52, padR = 16, padT = 18, padB = 34;
@@ -984,13 +987,13 @@ function drawFitPanel(res, truth) {
   const X = v => padL + (v - x0) / spanX * (W - padL - padR);
   const Y = v => H - padB - (v - y0) / spanY * (H - padT - padB);
 
-  c.strokeStyle = 'rgba(148,163,184,0.28)'; c.lineWidth = 1;
+  c.strokeStyle = 'rgba(138,131,119,0.28)'; c.lineWidth = 1;
   c.beginPath(); c.moveTo(padL, padT); c.lineTo(padL, H - padB); c.lineTo(W - padR, H - padB); c.stroke();
 
   // 真值斜率参考线, 过散点重心
   const mx = xs.reduce((a, b) => a + b, 0) / xs.length;
   const my = ys.reduce((a, b) => a + b, 0) / ys.length;
-  c.strokeStyle = 'rgba(148,163,184,0.75)';
+  c.strokeStyle = 'rgba(138,131,119,0.75)';
   c.setLineDash([5, 4]); c.beginPath();
   c.moveTo(X(x0), Y(my + truth * (x0 - mx)));
   c.lineTo(X(x1), Y(my + truth * (x1 - mx)));
@@ -1004,10 +1007,10 @@ function drawFitPanel(res, truth) {
   c.stroke();
 
   // 散点
-  c.fillStyle = '#e2e8f0';
+  c.fillStyle = '#d8d1c4';
   for (const p of res.pts) { c.beginPath(); c.arc(X(p.x), Y(p.y), 3.4, 0, Math.PI * 2); c.fill(); }
 
-  c.fillStyle = 'rgba(148,163,184,0.9)';
+  c.fillStyle = 'rgba(138,131,119,0.9)';
   c.font = '11px ui-monospace, SFMono-Regular, Menlo, monospace';
   c.fillText('log(1/ε)', W - padR - 52, H - 10);
   c.save(); c.translate(14, padT + 46); c.rotate(-Math.PI / 2);
@@ -1015,7 +1018,7 @@ function drawFitPanel(res, truth) {
 
   c.fillStyle = '#d97742';
   c.fillText('拟合 ' + res.b.toFixed(3), W - padR - 118, padT + 12);
-  c.fillStyle = 'rgba(148,163,184,0.95)';
+  c.fillStyle = 'rgba(138,131,119,0.95)';
   c.fillText('真值 ' + truth.toFixed(3), W - padR - 118, padT + 28);
 }
 
@@ -1151,7 +1154,7 @@ function drawScaleExperiment() {
   const height = scaleCanvas.height || 300;
   if (width < 10 || height < 10) return;
   
-  scaleCtx.fillStyle = '#1e293b';
+  scaleCtx.fillStyle = '#1c1a16';
   scaleCtx.fillRect(0, 0, width, height);
   
   const gridSize = Math.floor(Math.sqrt(grainCount));
@@ -1192,7 +1195,7 @@ function drawScaleExperiment() {
         samples.push({ x: sx, y: sy, size: 2 + sampleCount });
       }
       
-      scaleCtx.strokeStyle = 'rgba(51, 65, 85, 0.5)';
+      scaleCtx.strokeStyle = 'rgba(56, 51, 43, 0.5)';
       scaleCtx.lineWidth = 1;
       scaleCtx.strokeRect(gx * cellWidth, gy * cellHeight, cellWidth, cellHeight);
     }
@@ -1201,8 +1204,8 @@ function drawScaleExperiment() {
   samples.forEach(sample => {
     scaleCtx.beginPath();
     scaleCtx.arc(sample.x, sample.y, sample.size, 0, Math.PI * 2);
-    scaleCtx.fillStyle = samplingMode === 'uniform' ? '#6366f1' : 
-                         samplingMode === 'adaptive' ? '#06b6d4' : '#8b5cf6';
+    scaleCtx.fillStyle = samplingMode === 'uniform' ? '#d97742' : 
+                         samplingMode === 'adaptive' ? '#6f9068' : '#b8683a';
     scaleCtx.fill();
   });
   
@@ -1322,7 +1325,7 @@ function drawWaveExperiment() {
   if (width < 10 || height < 10) return;
   
   // 清除背景
-  waveCtx.fillStyle = '#1e293b';
+  waveCtx.fillStyle = '#1c1a16';
   waveCtx.fillRect(0, 0, width, height);
   
   const centerX = width / 2;
