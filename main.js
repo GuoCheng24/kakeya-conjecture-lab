@@ -538,7 +538,7 @@ function draw2dExperiment() {
   
   const centerX = width / 2;
   const centerY = height / 2;
-  const scale = Math.min(width, height) * 0.3;
+  const scale = Math.min(width, height) * 0.42;
   
   // 绘制背景
   ctx2d.fillStyle = '#1e293b';
@@ -601,6 +601,8 @@ function draw2dExperiment() {
   updateStats(width, height);
 }
 
+let bestScore = 0, bestDirections = 0, bestCoverage = 0;
+
 function updateStats(width, height) {
   if (width < 10 || height < 10) return;
 
@@ -629,6 +631,25 @@ function updateStats(width, height) {
     const coverageRatioEl = document.getElementById('coverageRatio');
     if (segmentCountEl) segmentCountEl.textContent = directionCount;
     if (coverageRatioEl) coverageRatioEl.textContent = coverage + '%';
+
+    // A Besicovitch set has as many directions as you like and as little area
+    // as you like. Rewarding "more directions, less area" turns the sliders
+    // into that statement rather than a pair of unrelated knobs.
+    const cov = parseFloat(coverage);
+    if (directionCount >= 24 && cov > 0) {
+      const score = directionCount / cov;          // directions per unit area
+      if (score > bestScore) {
+        bestScore = score;
+        bestDirections = directionCount;
+        bestCoverage = cov;
+      }
+    }
+    const bestEl = document.getElementById('bestScore');
+    if (bestEl) {
+      bestEl.textContent = bestScore > 0
+        ? `${bestDirections} 方向 / ${bestCoverage.toFixed(1)}%`
+        : '试试看';
+    }
   } catch (e) {
     // getImageData can throw on a tainted canvas; the figure still renders.
   }
@@ -678,7 +699,7 @@ function drawDeltaExperiment() {
   if (width < 10 || height < 10) return;
   const centerX = width / 2;
   const centerY = height / 2;
-  const scale = Math.min(width, height) * 0.3;
+  const scale = Math.min(width, height) * 0.42;
   
   deltaCtx.fillStyle = '#1e293b';
   deltaCtx.fillRect(0, 0, width, height);
@@ -1252,3 +1273,48 @@ window.addEventListener('DOMContentLoaded', () => {
   initThree();
   initializedCanvases.add('three');
 });
+/* ---------------------------------------------------------------------------
+ * Star prompt.
+ *
+ * Asking before the visitor has got anything out of the page is just an ad, so
+ * it waits until they have actually explored - several sections, or real use of
+ * the 2D experiment. Dismissing it is permanent, and following the link counts
+ * as dismissing it too. It never blocks anything on the page.
+ * ------------------------------------------------------------------------- */
+(function initStarPrompt() {
+  const KEY = 'kakeya-star-prompt-dismissed';
+  let sectionsSeen = 0, interactions = 0, shown = false;
+
+  function dismiss() {
+    const el = document.getElementById('starPrompt');
+    if (el) el.hidden = true;
+    try { localStorage.setItem(KEY, '1'); } catch (e) { /* private mode */ }
+  }
+
+  function maybeShow() {
+    if (shown) return;
+    try { if (localStorage.getItem(KEY)) return; } catch (e) { /* ignore */ }
+    if (sectionsSeen < 4 && interactions < 12) return;
+    const el = document.getElementById('starPrompt');
+    if (!el) return;
+    el.hidden = false;
+    shown = true;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const close = document.getElementById('starPromptClose');
+    const later = document.getElementById('starPromptLater');
+    const go = document.getElementById('starPromptGo');
+    if (close) close.addEventListener('click', dismiss);
+    if (later) later.addEventListener('click', dismiss);
+    if (go) go.addEventListener('click', dismiss);
+
+    document.querySelectorAll('.nav-link').forEach((a) =>
+      a.addEventListener('click', () => { sectionsSeen++; maybeShow(); }));
+    ['directionCount', 'compression', 'mode', 'sampleCount', 'tubeRadius']
+      .forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => { interactions++; maybeShow(); });
+      });
+  });
+})();
