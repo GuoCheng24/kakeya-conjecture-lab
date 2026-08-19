@@ -221,72 +221,137 @@
     <section id="proof" class="section">
       <div class="section-header">
         <h2>证明地图</h2>
-        <p>王虹与 Zahl 证明的核心概念</p>
+        <p>王虹与 Zahl 怎么把一个世纪的问题拆开</p>
         <div class="toggle-group">
           <button class="toggle-btn active" data-layer="intuition">直觉层</button>
           <button class="toggle-btn" data-layer="math">数学层</button>
         </div>
       </div>
-      <div class="proof-steps">
-        <div class="proof-step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>细管</h3>
-            <div class="layer-content intuition">
-              <p>想象无数根针在空间中旋转，每根针变成一根极细的管子。这些管子的并集就是挂谷集合的近似。</p>
-            </div>
-            <div class="layer-content math" style="display: none;">
-              <p>对于每个方向 \( v \in S^2 \)，考虑半径为 \( \epsilon \) 的管 \( T_\epsilon(v) = \{ x : \text{dist}(x, \ell_v) \leq \epsilon \} \)，其中 \( \ell_v \) 是沿 \( v \) 方向的单位线段。</p>
-            </div>
-          </div>
+
+      <div class="proof-board">
+        <div class="board-title">一、尺度阶梯：把细管装进粗管</div>
+        <svg class="proof-svg" viewBox="0 0 880 300" role="img" aria-label="细管按中间尺度归并为粗管的示意图">
+          <defs>
+            <marker id="ar" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+              <polygon points="0 0, 9 3.5, 0 7" fill="#94a3b8"/>
+            </marker>
+          </defs>
+
+          <!-- 左: 单位球上的方向 -->
+          <text x="112" y="26" class="svg-cap" text-anchor="middle">方向球 S²</text>
+          <circle cx="112" cy="130" r="72" fill="none" stroke="#475569" stroke-width="1.4"/>
+          <g stroke="#5aa87a" stroke-width="1.5" opacity=".85">
+            <line x1="112" y1="130" x2="171" y2="88"/><line x1="112" y1="130" x2="178" y2="120"/>
+            <line x1="112" y1="130" x2="166" y2="163"/><line x1="112" y1="130" x2="128" y2="200"/>
+            <line x1="112" y1="130" x2="62"  y2="192"/><line x1="112" y1="130" x2="44"  y2="106"/>
+            <line x1="112" y1="130" x2="76"  y2="66"/> <line x1="112" y1="130" x2="132" y2="60"/>
+          </g>
+          <text x="112" y="228" class="svg-sub" text-anchor="middle">δ-分离的方向</text>
+          <text x="112" y="248" class="svg-num" text-anchor="middle">约 δ⁻² 个</text>
+
+          <line x1="196" y1="130" x2="246" y2="130" stroke="#94a3b8" stroke-width="1.4" marker-end="url(#ar)"/>
+          <text x="221" y="118" class="svg-tiny" text-anchor="middle">每个方向一根</text>
+
+          <!-- 中: 粗管 -->
+          <text x="392" y="26" class="svg-cap" text-anchor="middle">粗管　ρ × ρ × 1</text>
+          <g>
+            <rect x="266" y="60" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"/>
+            <rect x="266" y="92" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+                  transform="rotate(-1.8 392 99)"/>
+            <rect x="266" y="124" width="252" height="14" rx="3" fill="#3a6a9a" stroke="#7fb8e0" stroke-width="1.6"
+                  transform="rotate(1.2 392 131)"/>
+            <rect x="266" y="156" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+                  transform="rotate(-0.9 392 163)"/>
+            <rect x="266" y="188" width="252" height="14" rx="3" fill="#2d4a63" stroke="#5f93bd" stroke-width="1"
+                  transform="rotate(1.8 392 195)"/>
+          </g>
+          <text x="392" y="228" class="svg-sub" text-anchor="middle">按中间尺度 ρ 归并</text>
+          <text x="392" y="248" class="svg-num" text-anchor="middle">约 ρ⁻² 根</text>
+
+          <!-- 放大引线 -->
+          <path d="M518 124 L604 62" stroke="#d97742" stroke-width="1.1" stroke-dasharray="4 3" fill="none"/>
+          <path d="M518 139 L604 210" stroke="#d97742" stroke-width="1.1" stroke-dasharray="4 3" fill="none"/>
+          <text x="561" y="146" class="svg-tiny" text-anchor="middle" fill="#d97742">放大一根</text>
+
+          <!-- 右: 粗管内部的细管 -->
+          <text x="742" y="26" class="svg-cap" text-anchor="middle">细管　δ × δ × 1</text>
+          <rect x="604" y="62" width="276" height="148" rx="5" fill="none" stroke="#d97742" stroke-width="1.4"/>
+          <g stroke="#7fb8e0" stroke-width="2.4" opacity=".92">
+            <line x1="616" y1="78"  x2="868" y2="82"/><line x1="616" y1="94"  x2="868" y2="92"/>
+            <line x1="616" y1="110" x2="868" y2="116"/><line x1="616" y1="126" x2="868" y2="122"/>
+            <line x1="616" y1="142" x2="868" y2="148"/><line x1="616" y1="158" x2="868" y2="154"/>
+            <line x1="616" y1="174" x2="868" y2="180"/><line x1="616" y1="190" x2="868" y2="186"/>
+          </g>
+          <text x="742" y="228" class="svg-sub" text-anchor="middle">方向彼此相差不超过 ρ</text>
+          <text x="742" y="248" class="svg-num" text-anchor="middle">约 (ρ/δ)² 根</text>
+
+          <!-- 底部恒等式 -->
+          <line x1="40" y1="268" x2="840" y2="268" stroke="#334155" stroke-width="1"/>
+          <text x="440" y="290" class="svg-eq" text-anchor="middle">
+            ρ⁻² 根粗管 × (ρ/δ)² 根细管 = δ⁻² 根 &#8212; 正好是方向的总数，两边对得上
+          </text>
+        </svg>
+
+        <div class="layer-content intuition">
+          <p><strong>把方向分组，就把管子分组了。</strong>每个方向配一根极细的管；方向差得不多的那些管，可以打包进同一根粗一点的管里。粗管的数目、以及每根粗管里装多少细管，都由分组的粗细 ρ 决定——而两者相乘必须还原成细管总数。<strong>「黏性」说的就是这个打包能打到最满</strong>：细管尽可能地挤在一起，粗管的数目降到最少。</p>
         </div>
-        <div class="proof-step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>粗管</h3>
-            <div class="layer-content intuition">
-              <p>将方向空间分组，每组方向对应的管子合并成一根"粗管"。这样可以减少管子数量，便于分析。</p>
-            </div>
-            <div class="layer-content math" style="display: none;">
-              <p>使用多项式分割（Polynomial Partitioning）将方向球 \( S^2 \) 分割为低维代数曲面和细胞区域，每个细胞内的方向对应一根粗管。</p>
-            </div>
-          </div>
+        <div class="layer-content math" style="display: none;">
+          <p>取 δ-分离的方向集，每个方向对应一根 \( \delta\times\delta\times 1 \) 的管，共约 \( \delta^{-2} \) 根。选中间尺度 \( \rho \)（例如 \( \rho=\delta^{1/2} \)），把细管归并进 \( \rho\times\rho\times 1 \) 的粗管。</p>
+          <p>由方向的 δ-分离性，一根粗管内至多容纳 \( (\rho/\delta)^2 \) 根细管，因此覆盖所有细管<strong>至少</strong>需要 \( \rho^{-2} \) 根粗管。<strong>黏性（sticky）情形就是这个下界被取到的极端情形</strong>：恰有约 \( \rho^{-2} \) 根粗管，每根装约 \( (\rho/\delta)^2 \) 根细管。作者在论文摘要里把这一性质概括为「近似的多尺度自相似」。</p>
         </div>
-        <div class="proof-step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>黏连（Sticky）</h3>
-            <div class="layer-content intuition">
-              <p>相邻的粗管之间存在"黏连"——它们不是完全独立的，而是共享某些结构。这种黏连性质是证明的关键。</p>
-            </div>
-            <div class="layer-content math" style="display: none;">
-              <p>引入 Sticky Kakeya 集合概念：对于任意两个方向 \( v_1, v_2 \)，对应的管 \( T_\epsilon(v_1) \) 和 \( T_\epsilon(v_2) \) 在某种意义上是"黏连"的，即它们的交具有非平凡的结构。</p>
-            </div>
-          </div>
+      </div>
+
+      <div class="proof-board">
+        <div class="board-title">二、证明的分岔：难的是「不黏」那一半</div>
+        <svg class="proof-svg" viewBox="0 0 880 330" role="img" aria-label="证明按黏性与非黏性分为两支的结构图">
+          <defs>
+            <marker id="ar2" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+              <polygon points="0 0, 9 3.5, 0 7" fill="#94a3b8"/>
+            </marker>
+          </defs>
+
+          <rect x="300" y="14" width="280" height="46" rx="8" fill="#1e293b" stroke="#7fb8e0" stroke-width="1.6"/>
+          <text x="440" y="35" class="svg-box-t" text-anchor="middle">三维挂谷集合</text>
+          <text x="440" y="52" class="svg-tiny" text-anchor="middle">要证：维数 = 3</text>
+
+          <path d="M400 60 L214 104" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <path d="M480 60 L666 104" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+
+          <!-- 左支: 黏性 -->
+          <rect x="44" y="110" width="340" height="176" rx="10" fill="#182a22" stroke="#5aa87a" stroke-width="1.5"/>
+          <text x="214" y="136" class="svg-box-t" text-anchor="middle" fill="#7cc99a">黏性情形</text>
+          <text x="214" y="157" class="svg-sub" text-anchor="middle">细管在粗管里挤到最满</text>
+          <g stroke="#5aa87a" stroke-width="2.2" opacity=".9">
+            <line x1="86" y1="180" x2="342" y2="180"/><line x1="86" y1="192" x2="342" y2="192"/>
+            <line x1="86" y1="204" x2="342" y2="204"/><line x1="86" y1="216" x2="342" y2="216"/>
+          </g>
+          <text x="214" y="244" class="svg-sub" text-anchor="middle">尺度归纳可以直接闭合</text>
+          <text x="214" y="268" class="svg-cite" text-anchor="middle">Wang &amp; Zahl，arXiv:2210.09581（JAMS）</text>
+
+          <!-- 右支: 非黏性 -->
+          <rect x="496" y="110" width="340" height="176" rx="10" fill="#2a1e18" stroke="#d97742" stroke-width="1.5"/>
+          <text x="666" y="136" class="svg-box-t" text-anchor="middle" fill="#e59468">非黏性情形</text>
+          <text x="666" y="157" class="svg-sub" text-anchor="middle">细管散开，粗管远多于 ρ⁻²</text>
+          <g stroke="#d97742" stroke-width="2.2" opacity=".9">
+            <line x1="538" y1="176" x2="794" y2="186"/><line x1="538" y1="196" x2="794" y2="190"/>
+            <line x1="546" y1="212" x2="786" y2="204"/><line x1="532" y1="222" x2="800" y2="228"/>
+          </g>
+          <text x="666" y="244" class="svg-sub" text-anchor="middle">改用「颗粒」结构补位</text>
+          <text x="666" y="268" class="svg-cite" text-anchor="middle">Wang &amp; Zahl，arXiv:2502.17655（127 页）</text>
+
+          <path d="M214 286 L400 314" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <path d="M666 286 L480 314" stroke="#94a3b8" stroke-width="1.4" fill="none" marker-end="url(#ar2)"/>
+          <text x="440" y="326" class="svg-box-t" text-anchor="middle" fill="#7fb8e0">两支合起来 ⟹ 维数 = 3</text>
+        </svg>
+
+        <div class="layer-content intuition">
+          <p><strong>黏的那一半 2022 年就做完了，2025 年这篇 127 页处理的是不黏的那一半。</strong>管子散开时，前面那套「装进粗管再归纳」的计数不再够用。补位的工具叫<strong>颗粒</strong>：这类集合并不会摊成各向同性的小方块，而是自发地组织成一片片<strong>互不相交、朝向各异的棱柱</strong>。</p>
+          <p class="proof-caveat">这里有个转折值得知道：颗粒结构最早由 Katz、Łaba 与 Tao 在 1999 年引入，但<strong>他们那版论证本身要求黏性</strong>——恰恰是这里没有的条件。所以王虹与 Zahl 改走 Guth 的另一条颗粒路线。</p>
         </div>
-        <div class="proof-step">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h3>木纹颗粒</h3>
-            <div class="layer-content intuition">
-              <p>在不同尺度下观察，挂谷集合呈现出类似木纹的颗粒结构。这些颗粒在不同尺度上重复出现。</p>
-            </div>
-            <div class="layer-content math" style="display: none;">
-              <p>使用颗粒性分解（Granular Decomposition）将挂谷集合分解为不同尺度的颗粒，每个颗粒在适当的尺度下具有良好的结构性质。</p>
-            </div>
-          </div>
-        </div>
-        <div class="proof-step">
-          <div class="step-number">5</div>
-          <div class="step-content">
-            <h3>尺度归纳</h3>
-            <div class="layer-content intuition">
-              <p>从粗尺度到细尺度进行归纳证明：如果在粗尺度上集合具有完整维数，那么在细尺度上也保持完整维数。</p>
-            </div>
-            <div class="layer-content math" style="display: none;">
-              <p>通过多尺度分层分析框架（Multi-scale Hierarchical Analysis Framework），结合凸集密度分解引理，证明维数在所有尺度上都等于 3。</p>
-            </div>
-          </div>
+        <div class="layer-content math" style="display: none;">
+          <p>黏性情形已由 Wang–Zahl（arXiv:2210.09581，JAMS）解决；2025 年的 arXiv:2502.17655 处理<strong>非黏性</strong>情形，这是全部难度所在。</p>
+          <p>在非黏性情形下，逐尺度的管计数不再收敛到所需的指数。替代结构是<strong>颗粒（grains）</strong>：δ-管之并在中间尺度上并非表现为立方体的堆积，而是组织成一族<strong>不同取向的互不相交棱柱</strong>。Tao 在其综述中指出，Katz–Łaba–Tao 最初的 graininess 论证<strong>预设了黏性假设</strong>，在此不可用，故 Wang–Zahl 采用 Guth 发展的另一条颗粒路线，并为原论证所需的 x-ray 估计找到了替代。</p>
+          <p class="proof-caveat">本节据 Tao 的综述性博文《The three-dimensional Kakeya conjecture, after Wang and Zahl》（2025-02-25）与两篇论文的摘要写成，是<strong>高层结构的概述而非证明</strong>；细节请以原文为准。</p>
         </div>
       </div>
     </section>
@@ -584,6 +649,7 @@
           <ul>
             <li>Wolff, T. <em>Recent work connected with the Kakeya problem.</em> 收入《Lectures on Harmonic Analysis》，AMS University Lecture Series 29（doi:10.1090/ulect/029/11）&mdash; 进入这个领域的标准入口。</li>
             <li>Guth, L. <em>Polynomial Methods in Combinatorics.</em> AMS University Lecture Series 64，<strong>2016</strong>（doi:10.1090/ulect/064）&mdash; 含有限域挂谷问题的多项式方法。</li>
+            <li>Guth, L. <em>Introduction to the proof of the Kakeya conjecture.</em> arXiv:<a href="https://arxiv.org/abs/2505.07695" target="_blank" rel="noopener">2505.07695</a>（2025）&mdash; 综述性导读，交代问题背景与此前工作的困难。</li>
             <li>Guth, L. <em>Outline of the Wang&ndash;Zahl proof of the Kakeya conjecture in \(\mathbb{R}^3\).</em> arXiv:<a href="https://arxiv.org/abs/2508.05475" target="_blank" rel="noopener">2508.05475</a>（2025）&mdash; 想读证明梗概从这篇开始。</li>
           </ul>
         </div>
