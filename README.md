@@ -95,6 +95,15 @@ npm run build      # 产出 dist/
 
 若你发现本站任何表述与他人作品雷同而我们未致谢,请开 issue 指出,会立即补上或改写。
 
+## Other things from the same desk
+
+Written while trying to get papers out, so they tend to be useful at the same points in that process:
+
+- [scholarcheck](https://github.com/GuoCheng24/scholarcheck) — verify that a citation actually exists, and audit a whole .bib in CI
+- [docxaudit](https://github.com/GuoCheng24/docxaudit) — find what your converter silently dropped from a .docx
+- [sciglyph](https://github.com/GuoCheng24/sciglyph) — draw publication figures as code, in pure matplotlib
+- [world-model-map](https://github.com/GuoCheng24/world-model-map) — a map of open-source world models and where their authors say they break
+
 ## 许可
 
 代码 MIT。页面文字与图示 CC BY 4.0。引用的论文版权归原作者。
