@@ -6,6 +6,13 @@
   <title>挂谷猜想实验室 | Kakeya Conjecture Lab</title>
   <meta name="description" content="Interactive exploration of the Kakeya conjecture - from the 1917 needle problem to Wang Hong and Joshua Zahl's 2025 proof">
   <link rel="stylesheet" href="./style.css">
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]'], ['$$', '$$']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <nav class="navbar">
@@ -21,7 +28,7 @@
       <button class="nav-btn" data-section="definition">定义</button>
       <button class="nav-btn" data-section="proof">证明地图</button>
       <button class="nav-btn" data-section="timeline">时间线</button>
-      <button class="nav-btn" data-section="dimension">维数估计</button>
+      <button class="nav-btn" data-section="dimension">维数测量仪</button>
       <button class="nav-btn" data-section="multi-scale">多尺度采样</button>
       <button class="nav-btn" data-section="wave-packet">波包分解</button>
       <button class="nav-btn" data-section="sources">来源</button>
@@ -36,7 +43,7 @@
     <button class="nav-btn" data-section="definition">定义</button>
     <button class="nav-btn" data-section="proof">证明地图</button>
     <button class="nav-btn" data-section="timeline">时间线</button>
-    <button class="nav-btn" data-section="dimension">维数估计</button>
+    <button class="nav-btn" data-section="dimension">维数测量仪</button>
     <button class="nav-btn" data-section="multi-scale">多尺度采样</button>
     <button class="nav-btn" data-section="wave-packet">波包分解</button>
     <button class="nav-btn" data-section="sources">来源</button>
@@ -73,6 +80,13 @@
               </div>
             </div>
             <button class="control-btn" id="pauseBtn">⏸ 暂停旋转</button>
+            <div class="gap-meter">
+              <div class="gap-head">
+                <span class="gap-label">最大角隙</span>
+                <span class="gap-value" id="gapValue">—</span>
+              </div>
+              <p class="gap-note" id="gapNote"></p>
+            </div>
             <p class="interaction-hint">拖动旋转 · 滚轮缩放</p>
           </div>
         </div>
@@ -352,56 +366,99 @@
 
     <section id="dimension" class="section">
       <div class="section-header">
-        <h2>Kakeya 维数估计</h2>
-        <p>基于方向梯度能量分布的维数估计方法，用于评估方向信息完整性</p>
+        <h2>维数测量仪</h2>
+        <p>亲手量一次维数，看看为什么这个猜想不可能靠计算机验证</p>
       </div>
-      <div class="dimension-container">
-        <div class="dimension-canvas-wrapper">
+
+      <div class="meter-lead">
+        <p>挂谷猜想要断言的是一个数：<em>n</em> 维挂谷集合的 Hausdorff 维数<strong>恰好等于 n</strong>。既然是个数，能不能直接算出来看看？</p>
+        <p>下面这台测量仪用的是货真价实的<strong>盒计数法</strong>（box-counting）。为了能检验它，我们只喂给它<strong>维数已知的集合</strong>——你可以随时对照真值，看它测得准不准。</p>
+      </div>
+
+      <div class="meter-grid">
+        <div class="meter-panel">
+          <div class="panel-title">集合与测量网格</div>
           <canvas id="dimensionCanvas"></canvas>
+          <p class="panel-note" id="setNote"></p>
         </div>
-        <div class="dimension-controls">
-          <div class="control-group">
-            <label>结构类型</label>
-            <select id="structureType">
-              <option value="true3d">真3D结构（高维数）</option>
-              <option value="thin">薄板结构（低维数）</option>
-              <option value="needle">针状结构（低维数）</option>
-              <option value="kakeya">挂谷集合（理论维数3）</option>
-            </select>
-          </div>
-          <div class="control-group">
-            <label>噪声水平</label>
-            <input type="range" id="noiseLevel" min="0" max="0.5" value="0.1" step="0.05">
-            <span id="noiseValue">0.1</span>
-          </div>
-          <div class="dimension-stats">
-            <div class="stat-item">
-              <span class="stat-label">Kakeya维数估计</span>
-              <span class="stat-value" id="kakeyaDim">0.00</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">方向能量不均衡度</span>
-              <span class="stat-value" id="energyImbalance">0.00</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">X方向能量</span>
-              <span class="stat-value" id="energyX">0%</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Y方向能量</span>
-              <span class="stat-value" id="energyY">0%</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-label">Z方向能量</span>
-              <span class="stat-value" id="energyZ">0%</span>
-            </div>
-          </div>
+        <div class="meter-panel">
+          <div class="panel-title">log N(ε) 对 log(1/ε)</div>
+          <canvas id="dimensionFitCanvas"></canvas>
+          <p class="panel-note">斜率即维数估计值。虚线为真值斜率。</p>
         </div>
       </div>
-      <div class="dimension-theory">
-        <h3>理论背景</h3>
-        <p>利用Kakeya集的维数理论，我们可以定量估计数据的方向信息完整性。通过分析各方向的梯度能量分布，可以判断结构是真正的三维结构还是近似二维的薄板结构。</p>
-        <p>维数估计公式：<code>Kakeya_dim = 1 + 2 * entropy</code>，其中 entropy 是方向能量分布的归一化熵。</p>
+
+      <div class="meter-controls">
+        <div class="control-group">
+          <label for="setType">测量对象</label>
+          <select id="setType">
+            <option value="segment">线段 &mdash; 真值 1</option>
+            <option value="square">实心方块 &mdash; 真值 2</option>
+            <option value="cantor" selected>Cantor 尘 &mdash; 真值 log4/log3</option>
+            <option value="sierpinski">Sierpi&#324;ski 三角 &mdash; 真值 log3/log2</option>
+            <option value="kakeya">挂谷型细管并 &mdash; 真值 2</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="scaleFamily">盒子尺度族</label>
+          <select id="scaleFamily">
+            <option value="mixed" selected>混合 1,2,3,4,6,8,12,16,24,32</option>
+            <option value="p2">2 的幂 1,2,4,8,16,32,64</option>
+            <option value="p3">3 的幂 1,3,9,27,81</option>
+          </select>
+        </div>
+        <label class="check-inline"><input type="checkbox" id="showGrid" checked> 显示盒子网格</label>
+      </div>
+
+      <div class="meter-readout">
+        <div class="readout-item"><span class="readout-label">真值</span><span class="readout-value" id="dimTruth">&mdash;</span></div>
+        <div class="readout-item"><span class="readout-label">测量值</span><span class="readout-value" id="dimMeasured">&mdash;</span></div>
+        <div class="readout-item accent"><span class="readout-label">偏差</span><span class="readout-value" id="dimBias">&mdash;</span></div>
+        <div class="readout-item"><span class="readout-label">斜率标准误</span><span class="readout-value" id="dimSE">&mdash;</span></div>
+        <div class="readout-item"><span class="readout-label">R&sup2;</span><span class="readout-value" id="dimR2">&mdash;</span></div>
+      </div>
+
+      <div class="verdict-card" id="dimVerdict"></div>
+
+      <div class="meter-theory">
+        <h3>这台仪器在算什么</h3>
+        <p>把平面铺成边长 <em>ε</em> 的方格，数出与集合相交的格子个数 <em>N(ε)</em>。盒维数定义为</p>
+        <div class="math-line">\( \dim_{\mathrm{box}} K = \lim_{\varepsilon \to 0} \dfrac{\log N(\varepsilon)}{\log (1/\varepsilon)} \)</div>
+        <p>屏幕上没有 <em>ε</em>→0，只有有限个像素。所以实际做的是：取若干个 <em>ε</em>，把 \(\log N(\varepsilon)\) 对 \(\log(1/\varepsilon)\) 做最小二乘拟合，<strong>用斜率当作维数的估计</strong>。右图画的就是这条拟合线。</p>
+
+        <h3>亲手复现那个关键现象</h3>
+        <p>选 <strong>Cantor 尘</strong>，然后在两个尺度族之间来回切：</p>
+        <ul class="finding-list">
+          <li><strong>3 的幂</strong> &mdash; 测量值与真值 1.2619 吻合到小数点后四位。</li>
+          <li><strong>混合尺度</strong> &mdash; 同一个集合、同一个估计器，测出来变成约 0.94，<strong>偏了 0.32</strong>。</li>
+        </ul>
+        <p>集合没变，代码没变，变的只是<strong>量它的网格</strong>。Cantor 尘按 3 分自相似，网格边长是 3 的幂时与它<strong>共格</strong>，每一层都数得干净；边长取 2、4、6 这些数时，格子横跨了结构的间隙，计数系统性偏低。</p>
+        <p>不必逐个去试，下面是这台仪器在<strong>全部五个集合 &times; 三个尺度族</strong>上的实测偏差（页面里的同一份代码跑出来的）：</p>
+        <div class="matrix-wrap">
+        <table class="bias-matrix">
+          <thead><tr><th>集合</th><th>真值</th><th>混合尺度</th><th>2 的幂</th><th>3 的幂</th></tr></thead>
+          <tbody>
+            <tr><td>线段</td><td>1.0000</td><td class="ok">&minus;0.004</td><td class="ok">&minus;0.009</td><td class="ok">+0.000</td></tr>
+            <tr><td>实心方块</td><td>2.0000</td><td class="ok">&minus;0.009</td><td class="ok">&minus;0.018</td><td class="ok">+0.000</td></tr>
+            <tr><td>Cantor 尘</td><td>1.2619</td><td class="bad">&minus;0.319</td><td class="bad">&minus;0.194</td><td class="ok">&minus;0.000</td></tr>
+            <tr><td>Sierpi&#324;ski 三角</td><td>1.5850</td><td class="mid">&minus;0.032</td><td class="ok">+0.000</td><td class="mid">&minus;0.067</td></tr>
+            <tr class="highlight"><td>挂谷型细管并</td><td>2.0000</td><td class="mid">&minus;0.038</td><td class="mid">&minus;0.052</td><td class="mid">&minus;0.052</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="matrix-read">前两行：非分形集合，怎么量都准。中间两行：自相似集合<strong>只在与自己共格的尺度族下精确</strong>，换一个族就偏——而且 Cantor 与 Sierpi&#324;ski 各自偏在<strong>相反</strong>的族上。</p>
+        <p class="matrix-read">最后一行才是要害：<strong>挂谷型集合在三个族下没有一个准</strong>。它不是单一比例的自相似集，所以"换一个尺度族补救"这条路对它<strong>根本不存在</strong>——而它恰恰就是我们真正想量的那个东西。</p>
+        <p>换 <strong>Sierpi&#324;ski 三角</strong>（按 2 分自相似）再试一遍，会看到镜像的结果——这次是 2 的幂精确。而<strong>线段和实心方块两种尺度族都准</strong>：它们不是自相似分形，没有可以失配的特征尺度。</p>
+
+        <h3>为什么这否掉了"用计算机验证猜想"</h3>
+        <p>把上面的数放在一起看：</p>
+        <div class="scale-compare">
+          <div class="compare-row"><span class="compare-label">挂谷猜想需要分辨的差距</span><span class="compare-bar"><span style="width:3%"></span></span><span class="compare-num">0.01</span></div>
+          <div class="compare-row"><span class="compare-label">仅仅尺度族选错造成的偏差</span><span class="compare-bar wide"><span style="width:100%"></span></span><span class="compare-num">0.32</span></div>
+        </div>
+        <p>要证的命题是"维数<strong>恰好</strong>是 <em>n</em>"，也就是说必须排除 2.99。而对一个<strong>结构未知</strong>的集合，你事先并不知道该用哪个尺度族——真正的 Besicovitch 集根本不是单一比例的自相似集。测量本身的偏差比要分辨的差距大一个数量级还多。</p>
+        <p>更根本的一层：屏幕给不出 <em>ε</em>→0。Kakeya 集的反直觉之处恰恰全部住在<strong>无穷小尺度</strong>——它的 Lebesgue 测度是 0，任何有限分辨率下它都只是一堆有正面积的管子。所以 Wang 与 Zahl 的证明必须是<strong>跨越所有尺度的归纳论证</strong>，而不可能是任何一次计算。</p>
+        <p class="caveat">一点必要的严谨：本模块画的"挂谷型细管并"是有限 <em>δ</em> 的近似，它有正面积，盒维数就是 2。真正的 Besicovitch 集是 <em>δ</em>→0 的极限，测度为 0 而维数仍为 2（Davies 1971 证明了平面情形）。<strong>这个区别本身正是上面那段话的要害</strong>：屏幕上永远画不出真正的挂谷集合。</p>
       </div>
     </section>
 
@@ -509,33 +566,73 @@
 
     <section id="sources" class="section">
       <div class="section-header">
-        <h2>来源与参考</h2>
-        <p>所有重要结论都可追溯到官方资料、原始论文或可靠综述</p>
+        <h2>来源、致谢与延伸阅读</h2>
+        <p>每条都给出可直接核对的标识符；也请去看看做得比我们更好的地方</p>
       </div>
+
       <div class="sources-grid">
         <div class="source-card">
           <h3>原始论文</h3>
           <ul>
-            <li>Wang, H. & Zahl, J. (2025). Volume Estimates for Unions of Convex Sets, and the Kakeya Set Conjecture in Three Dimensions. arXiv:2502.17655</li>
-            <li>Wang, H. & Zahl, J. (2026). Sticky Kakeya Sets and the Sticky Kakeya Conjecture. JAMS</li>
-            <li>Guth, L., Wang, H., & Zahl, J. (2026). A Streamlined Proof of the Kakeya Set Conjecture in R^3</li>
+            <li>Wang, H. &amp; Zahl, J. <em>Volume estimates for unions of convex sets, and the Kakeya set conjecture in three dimensions.</em> arXiv:<a href="https://arxiv.org/abs/2502.17655" target="_blank" rel="noopener">2502.17655</a>（2025）&mdash; 三维挂谷猜想的证明。</li>
+            <li>Wang, H. &amp; Zahl, J. <em>Sticky Kakeya sets and the sticky Kakeya conjecture.</em> arXiv:<a href="https://arxiv.org/abs/2210.09581" target="_blank" rel="noopener">2210.09581</a>（2022 预印本；JAMS 2026）&mdash; 先解决黏性特例。</li>
+            <li>Guth, L., Wang, H. &amp; Zahl, J. <em>A streamlined proof of the Kakeya set conjecture in \(\mathbb{R}^3\).</em> arXiv:<a href="https://arxiv.org/abs/2601.14411" target="_blank" rel="noopener">2601.14411</a>（2026）&mdash; 简化版证明。</li>
           </ul>
         </div>
         <div class="source-card">
-          <h3>官方资料</h3>
+          <h3>综述与教材</h3>
           <ul>
-            <li>国际数学家大会（ICM）2026 官方网站</li>
-            <li>菲尔兹奖官方获奖词</li>
-            <li>Clay Mathematics Institute 相关资料</li>
+            <li>Wolff, T. <em>Recent work connected with the Kakeya problem.</em> 收入《Lectures on Harmonic Analysis》，AMS University Lecture Series 29（doi:10.1090/ulect/029/11）&mdash; 进入这个领域的标准入口。</li>
+            <li>Guth, L. <em>Polynomial Methods in Combinatorics.</em> AMS University Lecture Series 64，<strong>2016</strong>（doi:10.1090/ulect/064）&mdash; 含有限域挂谷问题的多项式方法。</li>
+            <li>Guth, L. <em>Outline of the Wang&ndash;Zahl proof of the Kakeya conjecture in \(\mathbb{R}^3\).</em> arXiv:<a href="https://arxiv.org/abs/2508.05475" target="_blank" rel="noopener">2508.05475</a>（2025）&mdash; 想读证明梗概从这篇开始。</li>
           </ul>
         </div>
         <div class="source-card">
-          <h3>可靠综述</h3>
+          <h3>2026 菲尔兹奖</h3>
           <ul>
-            <li>Wolff, T. (2000). Recent work connected with the Kakeya problem. Notices of the AMS</li>
-            <li>Guth, L. (2015). Polynomial Methods in Combinatorics. American Mathematical Society</li>
+            <li>王虹（Hong Wang，纽约大学 / IHES）于 <strong>2026 年 7 月 23 日</strong>在费城国际数学家大会获<strong>菲尔兹奖</strong>，为该奖 90 年历史上第三位女性得主。</li>
+            <li>公告与报道：<a href="https://www.simonsfoundation.org/2026/07/23/2026-fields-medals-awarded-to-four-of-worlds-top-mathematicians/" target="_blank" rel="noopener">Simons Foundation</a>、<a href="https://euromathsoc.org/news/2026-fields-medallists-and-imu-prize-winners-announced-222" target="_blank" rel="noopener">欧洲数学会</a>、<a href="https://www.quantamagazine.org/hong-wang-wins-2026-fields-medal-the-third-woman-ever-20260723/" target="_blank" rel="noopener">Quanta</a>。</li>
           </ul>
         </div>
+      </div>
+
+      <div class="credits-block">
+        <h3>致谢：站在别人做过的东西旁边</h3>
+        <p>做这个页面之前，我们看过下面这些公开作品。它们各自做了我们没做的事，值得你专门去看一趟——尤其是第一条。</p>
+
+        <div class="credit-list">
+          <div class="credit-item">
+            <div class="credit-head">
+              <a href="https://teorth.github.io/tao-web/applets.html" target="_blank" rel="noopener">Terence Tao &mdash; tao-web 交互工具集</a>
+              <span class="credit-tag">直接影响了本站</span>
+            </div>
+            <p>其中两个与挂谷问题直接相关：<a href="https://teorth.github.io/tao-web/apps/kakeya.html" target="_blank" rel="noopener">The Kakeya needle</a> 让针在历代经典构造里真转起来（圆盘、Reuleaux 三角、Pál 三角、三尖内摆线、Bloom&ndash;Schoenberg 星形、Besicovitch&ndash;Perron 树），并实时报出面积；<a href="https://teorth.github.io/tao-web/apps/kakeya3d.html" target="_blank" rel="noopener">A three-dimensional Kakeya set</a> 用 \(1\times\delta\times\delta\) 细管演示三维构造，可在共基束与 Perron 平移之间连续滑动，<strong>体积是精确计算的</strong>，而且整个三维渲染器是不依赖 WebGL 手写的。</p>
+            <p class="credit-note"><strong>说明：</strong>本站三维模块中「以 \(\delta\) 为管半径、以 <em>N</em> 控制管数、并提供一个共基发散形态」这套交互思路与该 applet 相近，在此致谢。若你想看<strong>精确体积</strong>与<strong>历代构造的真实动画</strong>，请直接去上面两个链接——那是我们没有做、也不打算重复做的部分。</p>
+          </div>
+
+          <div class="credit-item">
+            <div class="credit-head">
+              <a href="https://mino.mobi/kakeya/" target="_blank" rel="noopener">mino.mobi &mdash; 有限域挂谷猜想</a>
+            </div>
+            <p>把 Dvir(2008) 的有限域情形做成可点击的格子游戏：在 \(\mathbb{F}_q^2\) 里逐格构建集合，实时看还差哪些方向没被覆盖。有限域情形与实情形是<strong>两个不同难度的问题</strong>——前者一页纸的多项式方法即可解决，后者花了一个世纪。想体会这个反差，那个页面是最好的入口。</p>
+          </div>
+
+          <div class="credit-item">
+            <div class="credit-head">
+              <a href="https://www.quantamagazine.org/once-in-a-century-proof-settles-maths-kakeya-conjecture-20250314/" target="_blank" rel="noopener">Quanta Magazine &mdash; 一世纪一遇的证明</a>
+            </div>
+            <p>面向大众、但数学上不含糊的报道，交代了这个问题为什么重要、以及它与调和分析中一串猜想的关系。</p>
+          </div>
+        </div>
+
+        <h3>那本站做了什么不一样的</h3>
+        <p>上面几个作品都在<strong>展示挂谷集合是什么样</strong>。本站多做了一件事：把它当成一个<strong>可以动手量、并且会量错</strong>的对象。</p>
+        <ul class="finding-list">
+          <li><a href="#" class="jump-link" data-jump="dimension">维数测量仪</a>&mdash;&mdash; 用真正的盒计数去量维数，只喂真值已知的集合，让你看见<strong>估计器本身的偏差</strong>；并用一张实测矩阵说明为什么「用计算机验证挂谷猜想」这条路走不通。这是本站的原创内容。</li>
+          <li>二维覆盖实验 &mdash;&mdash; 直接读出方向覆盖率随压缩程度的塌缩。</li>
+          <li>多尺度与波包分解 &mdash;&mdash; 对应证明里真正用到的分析工具，而不只是构造的图形。</li>
+        </ul>
+        <p class="credit-note">本站代码以 MIT 许可开放，文字与图形为原创。若你发现任何表述与他人作品雷同而我们未致谢，请开 issue 指出，我们会立即补上或改写。</p>
       </div>
     </section>
   </main>
