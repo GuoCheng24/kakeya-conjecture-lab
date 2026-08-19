@@ -603,29 +603,37 @@ function draw2dExperiment() {
 
 function updateStats(width, height) {
   if (width < 10 || height < 10) return;
-  
+
   try {
     const imageData = ctx2d.getImageData(0, 0, width, height);
     const pixels = imageData.data;
-    let coveredPixels = 0;
-    
-    for (let i = 3; i < pixels.length; i += 4) {
-      if (pixels[i] > 0) {
-        coveredPixels++;
-      }
+
+    // The canvas is painted with an opaque background before anything is
+    // drawn, so every pixel has alpha 255. Counting alpha > 0 therefore
+    // reports 100% no matter what is on screen. Compare against the known
+    // background colour instead, and ignore the faint reference circle.
+    const BG = [30, 41, 59];          // #1e293b
+    const TOL = 26;                   // tolerance for antialiasing
+    let covered = 0;
+
+    for (let i = 0; i < pixels.length; i += 4) {
+      const dr = Math.abs(pixels[i]     - BG[0]);
+      const dg = Math.abs(pixels[i + 1] - BG[1]);
+      const db = Math.abs(pixels[i + 2] - BG[2]);
+      if (dr + dg + db > TOL) covered++;
     }
-    
-    const totalPixels = width * height;
-    const coverage = (coveredPixels / totalPixels * 100).toFixed(1);
-    
+
+    const coverage = (covered / (width * height) * 100).toFixed(1);
+
     const segmentCountEl = document.getElementById('segmentCount');
     const coverageRatioEl = document.getElementById('coverageRatio');
     if (segmentCountEl) segmentCountEl.textContent = directionCount;
     if (coverageRatioEl) coverageRatioEl.textContent = coverage + '%';
   } catch (e) {
-    // 忽略 getImageData 错误
+    // getImageData can throw on a tainted canvas; the figure still renders.
   }
 }
+
 
 // δ邻域可视化
 let deltaCanvas, deltaCtx;
