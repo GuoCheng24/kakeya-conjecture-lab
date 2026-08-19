@@ -115,20 +115,20 @@ function initThree() {
   scene.background = new THREE.Color(0x0f172a);
 
   camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.z = 5;
+  camera.position.z = 3.1;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.72);
   scene.add(ambientLight);
 
   directionalLight = new THREE.DirectionalLight(0x6366f1, 0.8);
   directionalLight.position.set(5, 5, 5);
   scene.add(directionalLight);
 
-  pointLight = new THREE.PointLight(0x06b6d4, 0.5);
+  pointLight = new THREE.PointLight(0x06b6d4, 1.05);
   pointLight.position.set(-5, -5, 5);
   scene.add(pointLight);
 
@@ -171,7 +171,7 @@ function initThree() {
 
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
-    camera.position.z = Math.max(2, Math.min(10, camera.position.z + e.deltaY * 0.005));
+    camera.position.z = Math.max(1.6, Math.min(8, camera.position.z + e.deltaY * 0.004));
   });
 
   // 触摸支持
@@ -213,7 +213,7 @@ function initThree() {
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const currentDistance = Math.sqrt(dx * dx + dy * dy);
       const scaleFactor = initialPinchDistance / currentDistance;
-      camera.position.z = Math.max(2, Math.min(10, camera.position.z * scaleFactor));
+      camera.position.z = Math.max(1.6, Math.min(8, camera.position.z * scaleFactor));
       initialPinchDistance = currentDistance;
     }
   }, { passive: true });
@@ -245,14 +245,14 @@ function createTubes() {
     particles.material.dispose();
   }
 
-  const geometry = new THREE.CylinderGeometry(tubeRadius, tubeRadius, 1.5, 8);
+  const geometry = new THREE.CylinderGeometry(tubeRadius, tubeRadius, 1.5, 10);
   
   // 根据模式选择颜色
   const color = patternColors[currentPattern] || 0x6366f1;
   const material = new THREE.MeshPhongMaterial({
     color: color,
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.88,
     side: THREE.DoubleSide,
     shininess: 100,
     specular: new THREE.Color(0xffffff)
