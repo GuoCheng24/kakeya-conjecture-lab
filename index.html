@@ -13,7 +13,8 @@
       <span class="logo">K</span>
       <span class="title">挂谷猜想实验室</span>
     </div>
-    <div class="nav-links">
+    <a class="gh-star" href="https://github.com/GuoCheng24/kakeya-conjecture-lab" target="_blank" rel="noopener" aria-label="Star kakeya-conjecture-lab on GitHub"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path></svg><span>Star on GitHub</span></a>
+        <div class="nav-links">
       <button class="nav-btn" data-section="intro">直觉</button>
       <button class="nav-btn" data-section="problems">问题</button>
       <button class="nav-btn" data-section="experiment-2d">二维实验</button>
@@ -155,6 +156,11 @@
               <span class="stat-value" id="coverageRatio">0%</span>
             </div>
           </div>
+            <div class="stat-card">
+              <span class="stat-label">最多方向 / 最小覆盖</span>
+              <span class="stat-value" id="bestScore">试试看</span>
+            </div>
+            <p class="hint">目标:方向越多、覆盖越小越好。Besicovitch 证明了两者可以同时做到极端 —— 方向任意多,面积任意小。</p>
         </div>
       </div>
     </section>
@@ -540,5 +546,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="./main.js"></script>
+
+  <!-- Shown only after the visitor has actually used the page, and only once. -->
+  <div id="starPrompt" class="star-prompt" hidden>
+    <button class="star-prompt-close" id="starPromptClose" aria-label="关闭">×</button>
+    <div class="star-prompt-body">
+      <div class="star-prompt-title">这个实验室对你有帮助吗?</div>
+      <p class="star-prompt-text">它是开源的,一个 star 就是最好的支持 —— 也让更多人找到它。</p>
+      <div class="star-prompt-actions">
+        <a class="star-prompt-btn" href="https://github.com/GuoCheng24/kakeya-conjecture-lab"
+           target="_blank" rel="noopener" id="starPromptGo">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor"
+            d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+          去 GitHub 点 star
+        </a>
+        <button class="star-prompt-later" id="starPromptLater">不用了</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
