@@ -14,7 +14,7 @@
 
 ## 在线试玩
 
-**https://guocheng24.github.io/kakeya-conjecture-lab/**
+**[guocheng24.github.io/kakeya-conjecture-lab](https://guocheng24.github.io/kakeya-conjecture-lab/)**
 
 拖动旋转、滚轮缩放,切换四种细管排布,调整样本数 `N` 与管半径 `δ`。面板会实时报出**最大角隙**——球面上离最近一根管最远的那个方向差了多少度。挂谷集合的定义要求这个数是 0,而**任何有限根管都做不到**:方向按 Fibonacci 球面采样(同等管数下角隙比随机采样小 35–45%),角隙仍按 `C/√N` 缓慢下降,N=640 时还有约 5°。
 
