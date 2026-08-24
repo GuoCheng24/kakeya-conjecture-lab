@@ -1,0 +1,20 @@
+{
+  "title": "Kakeya Conjecture Lab: an interactive lab with a box-counting dimension meter",
+  "description": "An interactive exploration of the Kakeya conjecture. Its dimension meter performs genuine box counting on sets whose dimension is known, so the reader can see the estimator's own bias — large enough to show why no finite computation settles the conjecture.",
+  "upload_type": "software",
+  "license": "mit",
+  "creators": [
+    {
+      "name": "Cheng, Guo",
+      "affiliation": "University of Chinese Academy of Sciences"
+    }
+  ],
+  "keywords": [
+    "Kakeya conjecture",
+    "mathematics",
+    "box-counting dimension",
+    "interactive visualisation",
+    "mathematics education"
+  ],
+  "access_right": "open"
+}

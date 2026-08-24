@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If this was useful in your work, please cite it."
+title: "Kakeya Conjecture Lab: an interactive lab with a box-counting dimension meter"
+abstract: "An interactive exploration of the Kakeya conjecture. Its dimension meter performs genuine box counting on sets whose dimension is known, so the reader can see the estimator's own bias — large enough to show why no finite computation settles the conjecture."
+type: software
+authors:
+  - family-names: Cheng
+    given-names: Guo
+    affiliation: "University of Chinese Academy of Sciences"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"   # fill in before the first Zenodo release
+repository-code: "https://github.com/GuoCheng24/kakeya-conjecture-lab"
+license: MIT
+version: 1.0.0
+keywords:
+  - "Kakeya conjecture"
+  - "mathematics"
+  - "box-counting dimension"
+  - "interactive visualisation"
+  - "mathematics education"
