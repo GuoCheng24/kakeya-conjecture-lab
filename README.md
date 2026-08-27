@@ -1,11 +1,13 @@
 # 挂谷猜想实验室 · Kakeya Conjecture Lab
 
+[![checks](https://github.com/GuoCheng24/kakeya-conjecture-lab/actions/workflows/test.yml/badge.svg)](https://github.com/GuoCheng24/kakeya-conjecture-lab/actions/workflows/test.yml) [![citations](https://github.com/GuoCheng24/kakeya-conjecture-lab/actions/workflows/citations.yml/badge.svg)](https://github.com/GuoCheng24/kakeya-conjecture-lab/actions/workflows/citations.yml) [![license](https://img.shields.io/badge/code-MIT-green)](LICENSE) [![text](https://img.shields.io/badge/text%20%26%20figures-CC%20BY%204.0-blue)](https://creativecommons.org/licenses/by/4.0/)
+
 **一根单位长度的针,能否在测度为零的集合里指向所有方向?** 1917 年的一个转针问题,2026 年因它颁出一枚菲尔兹奖。
 
 这是一个交互式科普页面。它不只是把挂谷集合**画出来**给你看,还把它当成一个**可以动手量、并且会量错**的对象:页面里的维数测量仪用真正的盒计数去量维数,只喂真值已知的集合,好让你看见**估计器本身的偏差**有多大——大到足以说明为什么这个猜想不可能靠计算机验证。
 
 <p align="center">
-  <img src="docs/screenshot-hero.png" width="100%">
+  <img src="docs/screenshot-hero.png" width="100%" alt="维数测量仪的截图:左侧是 Cantor 尘和边长 ε=32 的测量网格,右侧是 log N(ε) 对 log(1/ε) 的散点、拟合线(斜率 0.943)与真值斜率虚线(1.262);下方五个读数依次为真值 1.2619、测量值 0.9427、偏差 −0.3192、斜率标准误 0.1102、R² 0.9015">
 </p>
 
 <sub>截图是页面里的<strong>维数测量仪</strong>：用真盒计数去量 Cantor 尘（真值 log4/log3 = 1.2619），在一组与它不共格的尺度上测出 0.9427，<strong>偏差 0.3192</strong>。挂谷猜想需要分辨的差距是 0.01。</sub>
@@ -103,6 +105,24 @@ Written while trying to get papers out, so they tend to be useful at the same po
 - [docxaudit](https://github.com/GuoCheng24/docxaudit) — find what your converter silently dropped from a .docx
 - [sciglyph](https://github.com/GuoCheng24/sciglyph) — draw publication figures as code, in pure matplotlib
 - [world-model-map](https://github.com/GuoCheng24/world-model-map) — a map of open-source world models and where their authors say they break
+
+## 这些数字是被检查着的
+
+上面每个具体数字都不是抄进 README 的,是 `tests/` 里的 11 项检查每次推送时**从代码里重新算出来**再跟这一页比对的:
+
+| 检查什么 | 怎么查 |
+|---|---|
+| Cantor 尘的真值、混合尺度族下的测量值与偏差 | 把 `main.js` 里的 `buildSet` / `boxCount` / `measure` 抠出来在 Node 里**真跑一遍盒计数**,跟 README 里解析出的数字比 |
+| 共格尺度族下确实吻合真值 | 同上,3 的幂尺度族下偏差须 ≈ 0 |
+| 角隙 `N=640 约 5°`、`比随机小 35–45%` | 与 `main.js` 里记录的离线实测值(20000 探针)比对 |
+| `three@0.160.0` | README 说的版本 == `index.html` 真正加载的版本 |
+| 每张图都有 alt 文本、仓内引用的文件都存在 | 直接扫 |
+| `main.js` / `social_card.py` 语法 | `node --check` / `py_compile` |
+| `node_modules`、`dist` 没被提交进来 | 这个仓曾经犯过,2026-08-27 改写历史清掉了 186 个文件 |
+
+改了代码没改 README,或者改了 README 没改代码,**两个方向都会失败**——这七种情况各用一次故意写错验证过。
+
+引文(5 个 arXiv 编号 + 1 个 DOI)是否还解析得到,由**每周一次**的单独工作流查,不放在每次推送里:arXiv 有速率限制,查密了会返回 429,那跟"引文是编的"长得一模一样,而一个会无故变红的徽章会教所有人忽略它。
 
 ## 许可
 

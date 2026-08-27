@@ -1,0 +1,25 @@
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    name: README against the code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      # 没有依赖要装:检查只读 README.md / index.html / main.js,
+      # 并把 main.js 里那几个纯函数抠出来在 Node 里跑真正的盒计数。
+      - name: Run the checks
+        run: node --test tests/
+      - name: Parse main.js
+        run: node --check main.js
+      - name: Parse social_card.py
+        run: python3 -m py_compile docs/social_card.py

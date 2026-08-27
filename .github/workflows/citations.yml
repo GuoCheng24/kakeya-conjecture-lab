@@ -1,0 +1,23 @@
+name: citations
+
+# 每周一次,不在每次推送时跑。
+#
+# 理由写在 tests/check_citations.mjs 顶部:arXiv 有速率限制,查询密了会返回
+# HTTP 429,看起来跟"引文是编的"一模一样。一个会因为限流无故变红的徽章,
+# 会教所有人忽略它 —— 那比没有徽章更糟。
+on:
+  schedule:
+    - cron: "17 3 * * 1"      # 每周一 03:17 UTC
+  workflow_dispatch:
+
+jobs:
+  citations:
+    name: Every arXiv id and DOI still resolves
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Resolve every citation in the README
+        run: node tests/check_citations.mjs
