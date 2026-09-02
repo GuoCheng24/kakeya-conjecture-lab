@@ -127,3 +127,7 @@ Written while trying to get papers out, so they tend to be useful at the same po
 ## 许可
 
 代码 MIT。页面文字与图示 CC BY 4.0。引用的论文版权归原作者。
+
+## License
+
+Code is MIT (see [LICENSE](LICENSE)). The prose and figures on the site (`index.html`, `style.css` and the generated figures) are additionally offered under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), so they may be reused with attribution. Papers cited on the page remain under their authors' copyright.
