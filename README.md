@@ -91,6 +91,7 @@ npm run build      # 产出 dist/
 
 做这个页面之前看过下面这些公开作品,页面的"来源、致谢与延伸阅读"一节里有更详细的说明:
 
+- **[tjxj/sci-viz-lab](https://github.com/tjxj/sci-viz-lab)**(原名 `kakeya-conjecture-lab`)—— 本站的**选题与功能构想来自这个项目**:中心星束/分散/黏连/木纹四种排布、时间线、证明地图这些模块的想法都源于它。本站代码是独立重写的(逐行比对:`main.js` 与其重合 0–1%、`style.css` 8%、`index.html` 3–4%),并新增了维数测量仪、多尺度采样与波包分解三个模块;但**构想的来源应当在这里说明**。
 - **[Terence Tao — tao-web](https://teorth.github.io/tao-web/applets.html)** —— 其中 [The Kakeya needle](https://teorth.github.io/tao-web/apps/kakeya.html) 让针在历代经典构造里真转起来并实时报面积,[A three-dimensional Kakeya set](https://teorth.github.io/tao-web/apps/kakeya3d.html) 用 1×δ×δ 细管演示三维构造、**体积是精确计算的**,渲染器不依赖 WebGL 手写。本站三维模块中「以 δ 为管半径、以 N 控制管数、并提供一个共基发散形态」这套交互思路与之相近,在此致谢;想看精确体积与历代构造的真实动画请直接去那里。
 - **[mino.mobi/kakeya](https://mino.mobi/kakeya/)** —— 有限域情形(Dvir 2008)的可点击格子游戏。
 - **[Quanta Magazine](https://www.quantamagazine.org/once-in-a-century-proof-settles-maths-kakeya-conjecture-20250314/)** —— 面向大众但不含糊的报道。
